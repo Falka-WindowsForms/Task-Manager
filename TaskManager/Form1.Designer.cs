@@ -39,20 +39,20 @@ namespace TaskManager
             this.editTask_button = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.programmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.authorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changePasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeLoginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.authorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -71,12 +71,14 @@ namespace TaskManager
             this.task_viewer.HideSelection = false;
             this.task_viewer.Location = new System.Drawing.Point(15, 28);
             this.task_viewer.Margin = new System.Windows.Forms.Padding(6, 4, 6, 4);
+            this.task_viewer.MultiSelect = false;
             this.task_viewer.Name = "task_viewer";
             this.task_viewer.Size = new System.Drawing.Size(991, 325);
             this.task_viewer.TabIndex = 0;
             this.task_viewer.UseCompatibleStateImageBehavior = false;
             this.task_viewer.View = System.Windows.Forms.View.Details;
             this.task_viewer.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
+            this.task_viewer.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.task_viewer_MouseDoubleClick);
             // 
             // number_header
             // 
@@ -154,14 +156,14 @@ namespace TaskManager
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filters";
             // 
-            // comboBox2
+            // label2
             // 
-            this.comboBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(111, 58);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 27);
-            this.comboBox2.TabIndex = 4;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 61);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(64, 19);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Item:";
             // 
             // label1
             // 
@@ -172,14 +174,14 @@ namespace TaskManager
             this.label1.TabIndex = 5;
             this.label1.Text = "Column:";
             // 
-            // label2
+            // comboBox2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 61);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 19);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Item:";
+            this.comboBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(111, 58);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(121, 27);
+            this.comboBox2.TabIndex = 4;
             // 
             // menuStrip1
             // 
@@ -204,23 +206,9 @@ namespace TaskManager
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
             this.exitToolStripMenuItem.Text = "&Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.authorToolStripMenuItem});
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
-            this.aboutToolStripMenuItem.Text = "&About";
-            // 
-            // authorToolStripMenuItem
-            // 
-            this.authorToolStripMenuItem.Name = "authorToolStripMenuItem";
-            this.authorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.authorToolStripMenuItem.Text = "&Author";
             // 
             // userToolStripMenuItem
             // 
@@ -234,24 +222,28 @@ namespace TaskManager
             // changePasswordToolStripMenuItem
             // 
             this.changePasswordToolStripMenuItem.Name = "changePasswordToolStripMenuItem";
-            this.changePasswordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.changePasswordToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.changePasswordToolStripMenuItem.Text = "&Change password";
             // 
             // changeLoginToolStripMenuItem
             // 
             this.changeLoginToolStripMenuItem.Name = "changeLoginToolStripMenuItem";
-            this.changeLoginToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.changeLoginToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.changeLoginToolStripMenuItem.Text = "&Change login";
             // 
-            // pictureBox1
+            // aboutToolStripMenuItem
             // 
-            this.pictureBox1.Image = global::TaskManager.Properties.Resources.task;
-            this.pictureBox1.Location = new System.Drawing.Point(583, 360);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(423, 105);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 6;
-            this.pictureBox1.TabStop = false;
+            this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.authorToolStripMenuItem});
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.aboutToolStripMenuItem.Text = "&About";
+            // 
+            // authorToolStripMenuItem
+            // 
+            this.authorToolStripMenuItem.Name = "authorToolStripMenuItem";
+            this.authorToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.authorToolStripMenuItem.Text = "&Author";
             // 
             // button1
             // 
@@ -277,6 +269,16 @@ namespace TaskManager
             this.button2.Text = "Mark as To Do";
             this.button2.UseVisualStyleBackColor = false;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::TaskManager.Properties.Resources.task;
+            this.pictureBox1.Location = new System.Drawing.Point(583, 360);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(423, 105);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 6;
+            this.pictureBox1.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 19F);
@@ -296,6 +298,7 @@ namespace TaskManager
             this.Margin = new System.Windows.Forms.Padding(6, 4, 6, 4);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
