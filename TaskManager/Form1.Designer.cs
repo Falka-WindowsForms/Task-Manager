@@ -35,13 +35,11 @@ namespace TaskManager
             this.name_header = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.description_header = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.status_header = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.viewTask_button = new System.Windows.Forms.Button();
+            this.AddTask_button = new System.Windows.Forms.Button();
             this.editTask_button = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.Category_comboBox = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.programmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -109,17 +107,18 @@ namespace TaskManager
             this.status_header.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.status_header.Width = 150;
             // 
-            // viewTask_button
+            // AddTask_button
             // 
-            this.viewTask_button.BackColor = System.Drawing.Color.Coral;
-            this.viewTask_button.FlatAppearance.BorderColor = System.Drawing.Color.SaddleBrown;
-            this.viewTask_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.viewTask_button.Location = new System.Drawing.Point(266, 368);
-            this.viewTask_button.Name = "viewTask_button";
-            this.viewTask_button.Size = new System.Drawing.Size(130, 44);
-            this.viewTask_button.TabIndex = 1;
-            this.viewTask_button.Text = "View task";
-            this.viewTask_button.UseVisualStyleBackColor = false;
+            this.AddTask_button.BackColor = System.Drawing.Color.Coral;
+            this.AddTask_button.FlatAppearance.BorderColor = System.Drawing.Color.SaddleBrown;
+            this.AddTask_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddTask_button.Location = new System.Drawing.Point(266, 368);
+            this.AddTask_button.Name = "AddTask_button";
+            this.AddTask_button.Size = new System.Drawing.Size(130, 44);
+            this.AddTask_button.TabIndex = 1;
+            this.AddTask_button.Text = "Add task";
+            this.AddTask_button.UseVisualStyleBackColor = false;
+            this.AddTask_button.Click += new System.EventHandler(this.AddTask_button_Click);
             // 
             // editTask_button
             // 
@@ -133,22 +132,20 @@ namespace TaskManager
             this.editTask_button.Text = "Edit task";
             this.editTask_button.UseVisualStyleBackColor = false;
             // 
-            // comboBox1
+            // Category_comboBox
             // 
-            this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(111, 25);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 27);
-            this.comboBox1.TabIndex = 3;
+            this.Category_comboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Category_comboBox.FormattingEnabled = true;
+            this.Category_comboBox.Location = new System.Drawing.Point(111, 25);
+            this.Category_comboBox.Name = "Category_comboBox";
+            this.Category_comboBox.Size = new System.Drawing.Size(121, 27);
+            this.Category_comboBox.TabIndex = 3;
             // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.comboBox2);
-            this.groupBox1.Controls.Add(this.comboBox1);
+            this.groupBox1.Controls.Add(this.Category_comboBox);
             this.groupBox1.Location = new System.Drawing.Point(22, 360);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(238, 105);
@@ -156,32 +153,14 @@ namespace TaskManager
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Filters";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 61);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 19);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Item:";
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 28);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(86, 19);
+            this.label1.Size = new System.Drawing.Size(108, 19);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Column:";
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(111, 58);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 27);
-            this.comboBox2.TabIndex = 4;
+            this.label1.Text = "Category:";
             // 
             // menuStrip1
             // 
@@ -289,7 +268,7 @@ namespace TaskManager
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.editTask_button);
-            this.Controls.Add(this.viewTask_button);
+            this.Controls.Add(this.AddTask_button);
             this.Controls.Add(this.task_viewer);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Lucida Console", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -317,13 +296,11 @@ namespace TaskManager
         private System.Windows.Forms.ColumnHeader description_header;
         private System.Windows.Forms.ColumnHeader status_header;
         private System.Windows.Forms.ColumnHeader category_header;
-        private System.Windows.Forms.Button viewTask_button;
+        private System.Windows.Forms.Button AddTask_button;
         private System.Windows.Forms.Button editTask_button;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox Category_comboBox;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem programmToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;

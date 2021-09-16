@@ -12,6 +12,12 @@ using System.Windows.Forms;
 using TaskManager.Models;
 namespace TaskManager
 {
+    public enum EnumStatuses
+    {
+        ToDo,
+        InProgressbar,
+        Done
+    }
     public partial class Form1 : Form
     {
         string connectionString;
@@ -74,6 +80,8 @@ namespace TaskManager
                     catalog.Id = (int)reader["Id"];
                     catalog.Name = reader["Name"].ToString();
                     Catalogs.Add(catalog);
+                    Category_comboBox.Items.Add(catalog);
+                    Category_comboBox.DisplayMember = "Name";
                 }
 
             }
@@ -207,6 +215,12 @@ namespace TaskManager
                 }
             }
             //MessageBox.Show(tmp);
+            tdv.ShowDialog();
+        }
+
+        private void AddTask_button_Click(object sender, EventArgs e)
+        {
+            AddTaskForm tdv = new AddTaskForm();
             tdv.ShowDialog();
         }
     }
