@@ -131,6 +131,7 @@ namespace TaskManager
             this.editTask_button.TabIndex = 2;
             this.editTask_button.Text = "Edit task";
             this.editTask_button.UseVisualStyleBackColor = false;
+            this.editTask_button.Click += new System.EventHandler(this.editTask_button_Click);
             // 
             // Category_comboBox
             // 

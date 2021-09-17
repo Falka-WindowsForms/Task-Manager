@@ -186,6 +186,7 @@ namespace TaskManager
             this.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.Name = "AddTaskForm";
             this.Text = "AddTaskForm";
+            this.Load += new System.EventHandler(this.AddTaskForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
