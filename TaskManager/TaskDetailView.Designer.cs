@@ -29,6 +29,7 @@ namespace TaskManager
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TaskDetailView));
             this.label2 = new System.Windows.Forms.Label();
             this.SHDescription_textBox = new System.Windows.Forms.TextBox();
             this.Name_textBox = new System.Windows.Forms.TextBox();
@@ -117,10 +118,11 @@ namespace TaskManager
             this.Controls.Add(this.label2);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(10, 9, 10, 9);
             this.MaximizeBox = false;
             this.Name = "TaskDetailView";
-            this.Text = "TaskDetailView";
+            this.Text = "Detail View";
             this.Load += new System.EventHandler(this.TaskDetailView_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

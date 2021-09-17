@@ -107,8 +107,12 @@ namespace TaskManager
                 connection.Close();
             }
         }
-        private void LoadTasks()
+        private void LoadTasks(int Filter_CatalogId=-1)
         {
+            if (connection.State == ConnectionState.Open)
+                return;
+            Tasks = new List<MyTask>();
+            task_viewer.Items.Clear();
             try
             {
                 string sqlQuery = $"select * from Tasks";
@@ -124,37 +128,40 @@ namespace TaskManager
                     task.FullDescription = reader["TaskDescription"].ToString();
                     task.CatalogId = (int)reader["CatalogId"];
                     task.StatusId = (int)reader["StatusId"];
-                    var item = task_viewer.Items.Add(task.Id.ToString());
-                    string CatalogName = "Error";
-                    if(Catalogs.Count>0 && Catalogs[0].Id == task.CatalogId)
+                    if (Filter_CatalogId == -1 || task.CatalogId == Filter_CatalogId)
                     {
-                        CatalogName = Catalogs[0].Name;
-                    }
-                    else
-                    {
-                        for(int i = 0; i < Catalogs.Count; i++)
-                            if (Catalogs[i].Id == task.CatalogId)
-                                CatalogName = Catalogs[i].Name;
-                    }
-                    item.SubItems.Add(CatalogName);
+                        var item = task_viewer.Items.Add(task.Id.ToString());
+                        string CatalogName = "Error";
+                        if (Catalogs.Count > 0 && Catalogs[0].Id == task.CatalogId)
+                        {
+                            CatalogName = Catalogs[0].Name;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < Catalogs.Count; i++)
+                                if (Catalogs[i].Id == task.CatalogId)
+                                    CatalogName = Catalogs[i].Name;
+                        }
+                        item.SubItems.Add(CatalogName);
 
-                    item.SubItems.Add(task.Name);
-                    item.SubItems.Add(task.ShortDescription);
+                        item.SubItems.Add(task.Name);
+                        item.SubItems.Add(task.ShortDescription);
 
-                    string StatusName = "Error";
-                    if (Statuses.Count > 0 && Statuses[0].Id == task.StatusId)
-                    {
-                        StatusName = Statuses[0].Name;
-                    }
-                    else
-                    {
-                        for (int i = 0; i < Statuses.Count; i++)
-                            if (Statuses[i].Id == task.StatusId)
-                                StatusName = Statuses[i].Name;
-                    }
-                    item.SubItems.Add(StatusName);
+                        string StatusName = "Error";
+                        if (Statuses.Count > 0 && Statuses[0].Id == task.StatusId)
+                        {
+                            StatusName = Statuses[0].Name;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < Statuses.Count; i++)
+                                if (Statuses[i].Id == task.StatusId)
+                                    StatusName = Statuses[i].Name;
+                        }
+                        item.SubItems.Add(StatusName);
 
-                    Tasks.Add(task);
+                        Tasks.Add(task);
+                    }
                 }
 
             }
@@ -170,26 +177,26 @@ namespace TaskManager
         
         private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            int currentSort = e.Column;
-            resetColumnsName();
-            switch (currentSort)
-            {
-                case 0:
-                    task_viewer.Columns[0].Text = "Num↓";
-                    break;
-                case 1:
-                    task_viewer.Columns[1].Text = "Category↓";
-                    break;
-                case 2:
-                    task_viewer.Columns[2].Text = "Task↓";
-                    break;
-                case 3:
-                    task_viewer.Columns[3].Text = "Short description↓";
-                    break;
-                case 4:
-                    task_viewer.Columns[4].Text = "Status↓";
-                    break;
-            }
+            //int currentSort = e.Column;
+            //resetColumnsName();
+            //switch (currentSort)
+            //{
+            //    case 0:
+            //        task_viewer.Columns[0].Text = "Num↓";
+            //        break;
+            //    case 1:
+            //        task_viewer.Columns[1].Text = "Category↓";
+            //        break;
+            //    case 2:
+            //        task_viewer.Columns[2].Text = "Task↓";
+            //        break;
+            //    case 3:
+            //        task_viewer.Columns[3].Text = "Short description↓";
+            //        break;
+            //    case 4:
+            //        task_viewer.Columns[4].Text = "Status↓";
+            //        break;
+            //}
         }
         private void resetColumnsName()
         {
@@ -239,7 +246,6 @@ namespace TaskManager
                 SqlCommand cmd = new SqlCommand(sqlQuery, connection);
                 cmd.Parameters.Add("@p1", SqlDbType.NVarChar).Value = CatalogName;
                 cmd.ExecuteNonQuery();
-                MessageBox.Show($"Added");
                 
                 
             }
@@ -439,5 +445,143 @@ namespace TaskManager
             
 
         }
+
+        private void markAsInProgress_button_Click(object sender, EventArgs e)
+        {
+            if (task_viewer.SelectedItems.Count == 0)
+                return;
+            var tmp = task_viewer.SelectedItems[0].SubItems[0].Text;
+            int Id = int.Parse(tmp);
+            try
+            {
+                string sqlQuery = $"UPDATE [Tasks] SET StatusId = 2 WHERE [Id] = @p1;";
+                connection.Open();
+                SqlCommand cmd = new SqlCommand(sqlQuery, connection);
+                cmd.Parameters.Add("@p1", SqlDbType.Int).Value = Id;
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("Updated!", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                connection.Close();
+                UpdateAll();
+            }
+
+        }
+        private void markAsDone_button_Click(object sender, EventArgs e)
+        {
+            if (task_viewer.SelectedItems.Count == 0)
+                return;
+            var tmp = task_viewer.SelectedItems[0].SubItems[0].Text;
+            int Id = int.Parse(tmp);
+            try
+            {
+                string sqlQuery = $"UPDATE [Tasks] SET StatusId = 3 WHERE [Id] = @p1;";
+                connection.Open();
+                SqlCommand cmd = new SqlCommand(sqlQuery, connection);
+                cmd.Parameters.Add("@p1", SqlDbType.Int).Value = Id;
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("Updated!", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                connection.Close();
+                UpdateAll();
+            }
+        }
+
+        private void Category_comboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (Catalogs.Count == 0)
+                return;
+            if(Category_comboBox.Text == "All")
+            {
+                LoadTasks();
+            }
+            else
+            {
+                int index = FindCatalog(Category_comboBox.Text);
+                LoadTasks(index);
+            }
+        }
+
+        private void deleteTaskToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (task_viewer.SelectedItems.Count > 0)
+            {
+                DialogResult dr = MessageBox.Show("Are you sure", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dr != DialogResult.Yes)
+                    return;
+                var item = task_viewer.SelectedItems[0];
+                var tmp = item.SubItems[0].Text;
+                int Id = int.Parse(tmp);
+                try
+                {
+                    string sqlQuery = $"delete from Tasks WHERE ID = @p1";
+                    connection.Open();
+                    SqlCommand cmd = new SqlCommand(sqlQuery, connection);
+                    cmd.Parameters.Add("@p1", SqlDbType.Int).Value = Id;
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Deleted!", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    connection.Close();
+                    UpdateAll();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Item not selected", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void deleteCategoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Category_comboBox.Text!="All")
+            {
+                DialogResult dr = MessageBox.Show("Are you sure", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dr != DialogResult.Yes)
+                    return;
+                int Id = FindCatalog(Category_comboBox.Text);
+                try
+                {
+                    string sqlQuery = $"delete from Catalogs WHERE ID = @p1";
+                    connection.Open();
+                    SqlCommand cmd = new SqlCommand(sqlQuery, connection);
+                    cmd.Parameters.Add("@p1", SqlDbType.Int).Value = Id;
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Deleted!", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    connection.Close();
+                    UpdateAll();
+                }
+            }
+            else
+            {
+                MessageBox.Show("You can`t delete all categories", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+        }
     }
+   
 }

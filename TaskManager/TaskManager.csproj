@@ -127,6 +127,7 @@
       <DependentUpon>Database1.mdf</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\favicon.ico" />
     <Content Include="Images\task.png" />
   </ItemGroup>
   <ItemGroup>
