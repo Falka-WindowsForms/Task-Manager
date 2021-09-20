@@ -37,6 +37,10 @@ namespace TaskManager
         }
         private void Form1_Load(object sender, EventArgs e)
         {
+            LoginForm lf = new LoginForm(this);
+            DialogResult dr = lf.ShowDialog();
+            if (dr != DialogResult.OK)
+                this.Close();
             UpdateAll();
         }
         private void UpdateAll()
@@ -210,7 +214,11 @@ namespace TaskManager
         {
             this.Close();
         }
-
+        public bool Login(string login,string password)
+        {
+            bool result = LoginManager.Login(login, password, connection);
+            return result;
+        }
         private void task_viewer_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             TaskDetailView tdv= new TaskDetailView();
